@@ -1,4 +1,4 @@
 RNCalendar
 node_modules
 .idea
-.npm-debug.log
+npm-debug.log
