@@ -1,12 +1,17 @@
 {
   "name": "rn-calendars",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "An extensible calendar component for react-native",
   "keywords": [
     "react-native",
     "calendar",
-    "react-components"
+    "react-component",
+    "ios"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RNComponents/rn-calendars"
+  },
   "author": {
     "name": "Fantasy Shao",
     "email": "fantasyshao@icloud.com",

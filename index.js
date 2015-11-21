@@ -8,15 +8,17 @@ let PropTypes = React.PropTypes;
 let styles = require('./style');
 
 let {
+  Dimensions,
   View,
   Text,
   ScrollView,
   TouchableOpacity
-} = React;
+  } = React;
 
 let ROW = 7;
 let COLUMN = 7;
 let VIEW_INDEX = 2;
+let DEVICE_WIDTH = Dimensions.get('window').width;
 
 let EmptyDay = React.createClass({
   render () {
@@ -29,28 +31,31 @@ let EmptyDay = React.createClass({
 let Calendar = React.createClass({
 
   propTypes: {
-    data: PropTypes.array,
     scrollEnabled: PropTypes.bool,
     startDate: PropTypes.string,
     headings: PropTypes.array,
-    renderDay: PropTypes.func
+    renderDay: PropTypes.func,
+    selectDay: PropTypes.func
   },
 
   getDefaultProps () {
     return {
-      data: [],
       scrollEnabled: false,
       startDate: moment().format('YYYY-MM-DD'),
-      headings: ['日', '一', '二', '三', '四', '五', '六'],
+      headings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
       renderDay (newDay, isToday) {
         return (
-          <TouchableOpacity style={styles.dayWrapper} onPress={()=>{console.log(moment(newDay).format('YYYY-MM-DD'))}}>
+          <TouchableOpacity style={styles.dayWrapper}
+                            onPress={()=>this.props.selectDay(newDay)}>
             {isToday ?
               <Text style={styles.day}>Today</Text>:
               <Text style={styles.day}>{moment(newDay).date()}</Text>
             }
           </TouchableOpacity>
         );
+      },
+      selectDay (day) {
+        console.log(day);
       }
     }
   },
@@ -67,7 +72,7 @@ let Calendar = React.createClass({
   },
 
   componentDidMount () {
-
+    this._scrollToItem(VIEW_INDEX);
   },
 
   getInitialStack () {
@@ -92,8 +97,16 @@ let Calendar = React.createClass({
         {this._renderHeader()}
         {this._renderHeading()}
         {this.props.scrollEnabled ?
-          <ScrollView>
-
+          <ScrollView
+            ref='calendar'
+            horizontal={true}
+            scrollEnabled={true}
+            pagingEnabled={true}
+            removeClippedSubviews={true}
+            scrollEventThrottle={600}
+            showsHorizontalScrollIndicator={false}
+            automaticallyAdjustContentInsets={false}>
+            {this.state.calendarDate.map((date)=>this._renderMonth(date))}
           </ScrollView> :
           <View>
             {this.state.calendarDate.map((date)=>this._renderMonth(date))}
@@ -106,11 +119,11 @@ let Calendar = React.createClass({
   _renderHeader () {
     return (
       <View style={styles.header}>
-        <TouchableOpacity onPress={this._onPrev}>
+        <TouchableOpacity style={styles.nav} onPress={this._onPrev}>
           <View style={[styles.arrow, styles.left]} />
         </TouchableOpacity>
         <Text style={styles.title}>{moment(this.state.currentDate).format('MMM YYYY')}</Text>
-        <TouchableOpacity onPress={this._onNext}>
+        <TouchableOpacity style={styles.nav} onPress={this._onNext}>
           <View style={[styles.arrow, styles.right]} />
         </TouchableOpacity>
       </View>
@@ -128,7 +141,7 @@ let Calendar = React.createClass({
   },
 
   _renderMonth (date) {
-    // 当前月
+    // current month
     if (moment(this.state.currentDate).isSame(date, 'month')) {
       return this._renderMonthView(date);
     } else {
@@ -186,11 +199,40 @@ let Calendar = React.createClass({
   },
 
   _onPrev () {
-
+    this._onPrependMonth();
+    this._scrollToItem(VIEW_INDEX);
   },
 
   _onNext () {
+    this._onAppendMonth();
+    this._scrollToItem(VIEW_INDEX);
+  },
 
+  _onPrependMonth () {
+    var calendarDates = this.state.calendarDate;
+    calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
+    calendarDates.pop();
+    this.setState({
+      calendarDate: calendarDates,
+      currentDate: calendarDates[this.props.scrollEnabled ? VIEW_INDEX : 0]
+    });
+  },
+
+  _onAppendMonth () {
+    var calendarDates = this.state.calendarDate;
+    calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
+    calendarDates.shift();
+    this.setState({
+      calendarDate: calendarDates,
+      currentDate: calendarDates[this.props.scrollEnabled ? VIEW_INDEX : 0]
+    });
+  },
+
+  _scrollToItem (itemIndex) {
+    var scrollToX = itemIndex * DEVICE_WIDTH;
+    if (this.props.scrollEnabled) {
+      this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
+    }
   }
 
 });

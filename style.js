@@ -13,6 +13,11 @@ module.exports = React.StyleSheet.create({
     alignItems: 'center'
   },
 
+  nav: {
+    width: 20,
+    height: 20
+  },
+
   arrow: {
     borderLeftWidth: 2,
     borderTopWidth: 2,
