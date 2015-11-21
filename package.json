@@ -1,12 +1,19 @@
 {
   "name": "rn-calendars",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An extensible calendar component for react-native",
-  "keywords": ["react-native", "calendar", "react-components"],
+  "keywords": [
+    "react-native",
+    "calendar",
+    "react-components"
+  ],
   "author": {
     "name": "Fantasy Shao",
     "email": "fantasyshao@icloud.com",
     "url": "http://fantasy.codes"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.10.6"
+  }
 }
