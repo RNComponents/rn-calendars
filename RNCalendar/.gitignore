@@ -33,4 +33,9 @@ local.properties
 node_modules/
 npm-debug.log
 android
+
 index.android.js
+main.jsbundle
+fakedata.js
+Calendar.js
+style.js

@@ -1,13 +1,15 @@
 'use strict';
 
 var React = require('react-native');
-var Calendar = require('../index');
+var moment = require('moment');
+var Calendar = require('rn-calendars');
 
 var {
   AppRegistry,
   StyleSheet,
   Text,
   View,
+  TouchableOpacity
 } = React;
 
 var RNCalendar = React.createClass({
@@ -23,9 +25,7 @@ var RNCalendar = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    paddingTop: 20
   }
 });
 
