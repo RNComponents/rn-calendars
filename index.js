@@ -12,11 +12,11 @@ let {
   Text,
   ScrollView,
   TouchableOpacity
-  } = React;
+} = React;
 
-const ROW = 7;
-const COLUMN = 7;
-const VIEW_INDEX = 2;
+let ROW = 7;
+let COLUMN = 7;
+let VIEW_INDEX = 2;
 
 let EmptyDay = React.createClass({
   render () {
