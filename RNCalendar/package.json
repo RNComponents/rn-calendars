@@ -8,6 +8,6 @@
   "dependencies": {
     "moment": "^2.10.6",
     "react-native": "^0.14.2",
-    "rn-calendars": "0.0.2"
+    "rn-calendars": "0.0.5"
   }
 }
