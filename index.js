@@ -28,6 +28,33 @@ let EmptyDay = React.createClass({
   }
 });
 
+let Day = React.createClass({
+  getDefaultProps () {
+    return {
+      date: moment().format('YYYY-MM-DD'),
+      isSelected: false,
+      onSelected: function (date) {
+        console.log(moment(date).format('YYYY-MM-DD'));
+      }
+    }
+  },
+
+  render () {
+    let customStyle = this.props.isSelected === true ? { backgroundColor: '#007AFF'} : null;
+    let dayStyle = this.props.isSelected === true ? { color: 'white' } : null;
+
+    return (
+      <TouchableOpacity style={[styles.dayWrapper, customStyle]}
+                        onPress={()=>this.props.onSelected(this.props.date)}>
+        {this.props.isToday ?
+          <Text style={[styles.day, dayStyle]}>Today</Text>:
+          <Text style={[styles.day, dayStyle]}>{moment(this.props.date).date()}</Text>
+        }
+      </TouchableOpacity>
+    );
+  }
+});
+
 let Calendar = React.createClass({
 
   propTypes: {
@@ -41,27 +68,17 @@ let Calendar = React.createClass({
   getDefaultProps () {
     return {
       scrollEnabled: false,
-      startDate: moment().format('YYYY-MM-DD'),
+      selectedDay: moment().format('YYYY-MM-DD'),
       headings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-      renderDay (newDay, isToday) {
-        return (
-          <TouchableOpacity style={styles.dayWrapper}
-                            onPress={()=>this.props.selectDay(newDay)}>
-            {isToday ?
-              <Text style={styles.day}>Today</Text>:
-              <Text style={styles.day}>{moment(newDay).date()}</Text>
-            }
-          </TouchableOpacity>
-        );
-      },
       selectDay (day) {
-        console.log(day);
+        console.log(moment(day).format('YYYY-MM-DD'));
       }
     }
   },
 
   getInitialState () {
     return {
+      selectedDate: this.props.startDate,
       currentDate: moment().format('YYYY-MM-DD'),
       calendarDate: this.getInitialStack()
     }
@@ -105,7 +122,8 @@ let Calendar = React.createClass({
             removeClippedSubviews={true}
             scrollEventThrottle={600}
             showsHorizontalScrollIndicator={false}
-            automaticallyAdjustContentInsets={false}>
+            automaticallyAdjustContentInsets={false}
+            onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
             {this.state.calendarDate.map((date)=>this._renderMonth(date))}
           </ScrollView> :
           <View>
@@ -178,7 +196,12 @@ let Calendar = React.createClass({
             let newDay = moment(dayStart).set('date', dayNum + 1);
             let isToday = moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day');
 
-            days.push(this.props.renderDay(newDay, isToday));
+            if (this.props.renderDay) {
+              days.push(this.props.renderDay(newDay, isToday));
+            } else {
+              days.push(this._renderDefaultDay(newDay, isToday));
+            }
+
             dayNum++;
           }
         }
@@ -191,11 +214,31 @@ let Calendar = React.createClass({
         }
       }
 
-      weeks.push(<View style={{flexDirection:'row'}}>{days}</View>);
+      if (days.length == 0) {
+
+      } else {
+        weeks.push(<View style={styles.weekWrapper}>{days}</View>);
+      }
     }
 
-    return (<View>{weeks}</View>);
+    let renderedMonthView = <View style={{width:DEVICE_WIDTH}}>{weeks}</View>;
+    this.renderedMonths.push([date, renderedMonthView]);
+    return renderedMonthView;
 
+  },
+
+  _renderDefaultDay (newDay, isToday) {
+    let newDayFormatted = moment(newDay).format('YYYY-MM-DD');
+    let isSelected = moment(this.state.selectedDate).format('YYYY-MM-DD') === newDayFormatted;
+
+    return (<Day date={newDay}
+                 isToday={isToday}
+                 isSelected={isSelected}
+                 onSelected={()=>{
+                   this.setState({
+                     selectedDate: newDayFormatted
+                   });
+                 }} />);
   },
 
   _onPrev () {
@@ -232,6 +275,21 @@ let Calendar = React.createClass({
     var scrollToX = itemIndex * DEVICE_WIDTH;
     if (this.props.scrollEnabled) {
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
+    }
+  },
+
+  _scrollEnded (evt) {
+    var position = evt.nativeEvent.contentOffset.x;
+    var currentPage = position / DEVICE_WIDTH;
+
+    if (currentPage < VIEW_INDEX) {
+      this._onPrependMonth();
+      this._scrollToItem(VIEW_INDEX);
+    } else if (currentPage > VIEW_INDEX) {
+      this._onAppendMonth();
+      this._scrollToItem(VIEW_INDEX);
+    } else {
+      return false;
     }
   }
 

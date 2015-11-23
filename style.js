@@ -49,7 +49,10 @@ module.exports = React.StyleSheet.create({
   },
 
   heading: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#cecece'
   },
 
   headingUnit: {
@@ -58,9 +61,17 @@ module.exports = React.StyleSheet.create({
     paddingVertical: 5
   },
 
+  weekWrapper: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#cecece'
+  },
+
   dayWrapper: {
     flex: 1,
-    paddingVertical: 10
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   day: {
