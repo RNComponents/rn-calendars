@@ -79,7 +79,7 @@ let Calendar = React.createClass({
   getInitialState () {
     return {
       selectedDate: this.props.startDate,
-      currentDate: moment().format('YYYY-MM-DD'),
+      currentDate: moment(this.props.startDate).format('YYYY-MM-DD'),
       calendarDate: this.getInitialStack()
     }
   },
@@ -152,7 +152,7 @@ let Calendar = React.createClass({
     return (
       <View style={styles.heading}>
         {this.props.headings.map((heading, index)=>
-          <Text key={index} style={styles.headingUnit}>{heading}</Text>
+          <Text key={`calendar-heading-${index}`} style={styles.headingUnit}>{heading}</Text>
         )}
       </View>
     );

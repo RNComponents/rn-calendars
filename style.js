@@ -7,23 +7,28 @@ module.exports = React.StyleSheet.create({
 
   header: {
     flex: 1,
-    paddingVertical: 10,
-    marginHorizontal: 10,
+    height: 36,
+    paddingHorizontal: 50,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'rgb(237, 237, 237)'
   },
 
   nav: {
-    width: 20,
-    height: 20
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   arrow: {
     borderLeftWidth: 2,
     borderTopWidth: 2,
-    width: 14,
-    height: 14,
-    borderColor: '#333'
+    width: 10,
+    height: 10,
+    borderColor: 'rgb(188,193,199)'
   },
 
   left: {
@@ -50,21 +55,18 @@ module.exports = React.StyleSheet.create({
 
   heading: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#cecece'
+    backgroundColor: 'rgb(162, 172, 181)'
   },
 
   headingUnit: {
     flex: 1,
     textAlign: 'center',
-    paddingVertical: 5
+    paddingVertical: 5,
+    color: 'white'
   },
 
   weekWrapper: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: '#cecece'
+    flexDirection: 'row'
   },
 
   dayWrapper: {
