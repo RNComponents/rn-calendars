@@ -16,8 +16,8 @@ var RNCalendar = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <Calendar scrollEnabled={true}
-                  startDate="2015-11-30" />
+        <Calendar scrollEnabled={false}
+                  startDate="2015-12-01" />
       </View>
     );
   }
