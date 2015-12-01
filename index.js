@@ -55,7 +55,7 @@ let Day = React.createClass({
   }
 });
 
-let Calendar = React.createClass({
+module.exports = React.createClass({
 
   propTypes: {
     scrollEnabled: PropTypes.bool,
@@ -102,7 +102,7 @@ let Calendar = React.createClass({
       initialStack.push(moment(this.props.startDate).add(1, 'month').format());
       initialStack.push(moment(this.props.startDate).add(2, 'month').format());
     } else {
-      initialStack.push(moment(this.props.startDate).format())
+      initialStack.push(moment(this.props.startDate).format());
     }
 
     return initialStack;
@@ -191,7 +191,7 @@ let Calendar = React.createClass({
         if (preFiller < dayStartOffset) {
           days.push(<EmptyDay key={`${row},${column}`} />);
         } else {
-          // 本月内的日子
+          // Days in month
           if (dayNum < daysInMonth) {
             let newDay = moment(dayStart).set('date', dayNum + 1);
             let isToday = moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day');
@@ -214,9 +214,7 @@ let Calendar = React.createClass({
         }
       }
 
-      if (days.length == 0) {
-
-      } else {
+      if (days.length !== 0) {
         weeks.push(<View style={styles.weekWrapper}>{days}</View>);
       }
     }
@@ -231,14 +229,17 @@ let Calendar = React.createClass({
     let newDayFormatted = moment(newDay).format('YYYY-MM-DD');
     let isSelected = moment(this.state.selectedDate).format('YYYY-MM-DD') === newDayFormatted;
 
-    return (<Day date={newDay}
-                 isToday={isToday}
-                 isSelected={isSelected}
-                 onSelected={()=>{
-                   this.setState({
-                     selectedDate: newDayFormatted
-                   });
-                 }} />);
+    return (
+      <Day
+        date={newDay}
+        isToday={isToday}
+        isSelected={isSelected}
+        onSelected={()=>{
+          this.setState({
+            selectedDate: newDayFormatted
+          });
+        }} />
+    );
   },
 
   _onPrev () {
@@ -294,5 +295,3 @@ let Calendar = React.createClass({
   }
 
 });
-
-module.exports = Calendar;
