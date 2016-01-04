@@ -2,9 +2,12 @@ rn-calendars
 ---
 
 [![NPM version][npm-image]][npm-url]
+[![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/rn-calendars.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rn-calendars
+[download-image]: https://img.shields.io/npm/dm/rn-calendars.svg?style=flat-square
+[download-url]: https://npmjs.org/package/rn-calendars
 
 An extensible calendar component for react-native.
 
@@ -43,7 +46,7 @@ View [RNCalendar](RNCalendar).
 
 ### ScreenShot
 
-![screenshot](screenshot.png)
+<img width="50%" src="./screenshot.png" />
 
 ## Acknowledgement
 
