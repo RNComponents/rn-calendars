@@ -62,7 +62,8 @@ module.exports = React.createClass({
     startDate: PropTypes.string,
     headings: PropTypes.array,
     renderDay: PropTypes.func,
-    selectDay: PropTypes.func
+    selectDay: PropTypes.func,
+    locale: PropTypes.string
   },
 
   getDefaultProps () {
@@ -70,6 +71,7 @@ module.exports = React.createClass({
       scrollEnabled: false,
       selectedDay: moment().format('YYYY-MM-DD'),
       headings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      locale: 'en',
       selectDay (day) {
         console.log(moment(day).format('YYYY-MM-DD'));
       }
@@ -140,7 +142,12 @@ module.exports = React.createClass({
         <TouchableOpacity style={styles.nav} onPress={this._onPrev}>
           <View style={[styles.arrow, styles.left]} />
         </TouchableOpacity>
-        <Text style={styles.title}>{moment(this.state.currentDate).format('MMM YYYY')}</Text>
+        <Text style={styles.title}>
+          {this.props.locale === 'zh-cn' ?
+            moment(this.state.currentDate).format('YYYY年MM月') :
+            moment(this.state.currentDate).format('MMM YYYY')
+          }
+        </Text>
         <TouchableOpacity style={styles.nav} onPress={this._onNext}>
           <View style={[styles.arrow, styles.right]} />
         </TouchableOpacity>
