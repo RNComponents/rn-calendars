@@ -245,6 +245,8 @@ module.exports = React.createClass({
           this.setState({
             selectedDate: newDayFormatted
           });
+
+          this.props.selectDay(newDayFormatted);
         }} />
     );
   },
